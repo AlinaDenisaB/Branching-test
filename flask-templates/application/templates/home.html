@@ -1,7 +1,10 @@
-{% extends layout.html %}
+{% extends "layout.html" %}
 {% block body_content %}
+    <a href="{{ url_for('home') }}">Home Page</a>
     <a href="{{ url_for('about') }}">About Page</a>
-
+    <a href="{{ url_for('register') }}">Register Page</a>
+    <a href="{{ url_for('post') }}">Post Page</a>
+    
     {% for post in posts %}
         <div>
             <h3>{{ post.title }}</h3>

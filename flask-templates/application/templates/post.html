@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block body_content %}
+    <a href="{{ url_for('home') }}">Home Page</a>
+    <a href="{{ url_for('about') }}">About Page</a>
+    <a href="{{ url_for('register') }}">Register Page</a>
+    <a href="{{ url_for('post')}}">Post Page</a>
+    <div class='form'>
+        <form method='POST' action=''>
+	    {{ form.hidden_tag() }}
+            {{ form.first_name.label }}
+            {{ form.first_name }}
+            <br>
+            {{ form.last_name.label }}
+            {{ form.last_name }}
+            <br>
+            {{ form.title.label }}
+            {{ form.title }}
+            <br>
+            {{ form.content.label }}
+            {{ form.content }}
+            <br>
+            {{ form.submit }}
+        </form>
+    </div>
+{% endblock %}
