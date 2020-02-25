@@ -1,33 +1,33 @@
 from flask import render_template, redirect, url_for
-from application import app, db
-from application.models import Posts
-from application.forms import PostForm
+from application import app, db, bcrypt
+from application.models import Posts, Users
+from application.forms import PostForm, RegistrationForm
+import flask_bcrypt
 
-blogData = [
-    {
-        "name": {"first":"John", "last":"Doe"},
-        "title":"First Post",
-        "content":"This is some blog data for Flask lectures"
-    },
-    {
-        "name": {"first":"Jane", "last":"Doe"},
-        "title":"Second Post",
-        "content":"This is even more blog data for Flask lectures"
-    }
-]
 
 @app.route('/')
 @app.route('/home')
 def home():
-    return render_template('home.html', title='Home', posts=blogData)
+    postData=Posts.query.all()
+    return render_template('home.html', title='Home', posts=postData)
 
 @app.route('/about')
 def about():
     return render_template('about.html',title='About')
 
-@app.route('/register')
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-    return render_template('register.html',title='Register')
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hash_pw = bcrypt.generate_password_hash(form.password.data)
+
+        user = Users(email=form.email.data, password=hash_pw)
+
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(url_for('post'))
+    return render_template('register.html',title='Register', form=form)
 
 @app.route('/post', methods=['GET', 'POST'])
 def post():

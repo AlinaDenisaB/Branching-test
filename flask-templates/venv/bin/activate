@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/Alina/Branching-test/flask-templates/venv"
+VIRTUAL_ENV="/home/alina/Branching-test/flask-templates/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
