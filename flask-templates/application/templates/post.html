@@ -1,9 +1,6 @@
 {% extends "layout.html" %}
 {% block body_content %}
-    <a href="{{ url_for('home') }}">Home Page</a>
-    <a href="{{ url_for('about') }}">About Page</a>
-    <a href="{{ url_for('register') }}">Register Page</a>
-    <a href="{{ url_for('post')}}">Post Page</a>
+   
     <div class='form'>
         <form method='POST' action=''>
 	    {{ form.hidden_tag() }}

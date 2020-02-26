@@ -1,7 +1,24 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from application.models import Users
+from application.models import Users, Posts
+from application import db
+
+def Unique_title():
+    message = "Value must be unique"
+    def _Unique_title(form, feild):
+         if str(Posts.query.filter_by(title = feild.data).all()) != '[]':
+            raise ValidationError("Vlaue entered not unique.")
+            print('failed validation test for uniqueness')
+    return _Unique_title
+
+def Unique_content():
+    message = 'value must be unique'
+    def _Unique_content(form, feild):
+        if str(Posts.query.filter_by(content = feild.data).all()) != '[]':
+            raise ValidationError("Vlaue entered not unique.")
+            print('failed validation test for uniqueness')
+    return _Unique_content
 
 class PostForm(FlaskForm):
     first_name = StringField('First Name',
@@ -19,13 +36,15 @@ class PostForm(FlaskForm):
     title = StringField('Title',
         validators = [
             DataRequired(),
-            Length(min=2, max=100)
+            Length(min=2, max=100),
+            Unique_title()
         ]
     )
     content = StringField('Content',
         validators = [
             DataRequired(),
-            Length(min=2, max=1000)
+            Length(min=2, max=1000),
+            Unique_content()
         ]
     )
     submit = SubmitField('Post!')
@@ -55,3 +74,20 @@ class RegistrationForm(FlaskForm):
 
         if user:
             raise ValidationError('Email already in use')
+
+class LoginForm(FlaskForm):
+    email = StringField('Email',
+        validators=[
+            DataRequired(),
+            Email()
+        ]
+    )
+
+    password = PasswordField('Password',
+        validators=[
+            DataRequired()
+        ]
+    )
+
+    remember = BooleanField('Remember Me')
+    submit = SubmitField('Login')
